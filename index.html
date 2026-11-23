@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="NEXA MUSIC — music library and playlist hub">
+  <title>NEXA MUSIC</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css"><link rel="stylesheet" href="css/player.css"><link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" href="#"><span class="brand-mark">♫</span>NEXA<span class="green">MUSIC</span></a>
+    <nav class="main-nav">
+      <button class="nav-link active" data-view="home">⌂ <span>Beranda</span></button>
+      <button class="nav-link" data-view="search">⌕ <span>Cari</span></button>
+      <button class="nav-link" data-view="library">▤ <span>Library</span></button>
+    </nav>
+    <div class="side-label">KOLEKSI KAMU</div>
+    <button class="nav-link" id="create-playlist">＋ <span>Buat playlist</span></button>
+    <button class="nav-link" data-view="liked">♥ <span>Lagu disukai</span></button>
+    <div class="side-label">PLAYLIST</div>
+    <div id="sidebar-playlists" class="sidebar-playlists"></div>
+    <div class="sidebar-note">Playlist eksternal ditautkan melalui layanan resmi.</div>
+  </aside>
+
+  <main class="main-area">
+    <header class="topbar">
+      <div class="history-buttons"><button aria-label="Kembali">‹</button><button aria-label="Maju">›</button></div>
+      <div class="search-wrap"><span>⌕</span><input id="search-input" type="search" placeholder="Cari lagu, artis, playlist..."></div>
+      <button class="profile-pill">● <span>Guest</span></button>
+    </header>
+    <section id="view-home" class="view active">
+      <div class="hero"><p class="eyebrow">YOUR MUSIC, YOUR SPACE</p><h1>Musik yang menemani<br><span>setiap momen.</span></h1><p>Satukan koleksi lokal, YouTube Music, dan Spotify dalam satu library.</p>
+        <button class="primary-btn" id="hero-add">＋ Tambahkan playlist</button>
+      </div>
+      <div class="section-heading"><div><p class="eyebrow">MULAI DARI SINI</p><h2>Akses cepat</h2></div></div>
+      <div class="quick-grid">
+        <button class="quick-card" data-view="liked"><span class="quick-icon liked-icon">♥</span><b>Lagu disukai</b></button>
+        <button class="quick-card" data-view="library"><span class="quick-icon">▤</span><b>Library kamu</b></button>
+        <button class="quick-card" id="quick-import"><span class="quick-icon">↗</span><b>Impor playlist</b></button>
+      </div>
+      <div class="section-heading"><div><p class="eyebrow">DENGARKAN LAGI</p><h2>Baru ditambahkan</h2></div></div>
+      <div id="recent-grid" class="card-grid"></div>
+    </section>
+
+    <section id="view-search" class="view">
+      <div class="page-title"><p class="eyebrow">DISCOVER</p><h1>Jelajahi musik</h1><p>Cari metadata lagu melalui Spotify atau YouTube Data API yang kamu konfigurasi.</p></div>
+      <div class="search-panel"><input id="catalog-query" placeholder="Contoh: Hindia Evaluasi"><select id="catalog-source"><option value="spotify">Spotify</option><option value="youtube">YouTube</option></select><button class="primary-btn" id="catalog-search">Cari</button></div>
+      <div id="search-status" class="status-line"></div><div id="search-results" class="result-list"></div>
+    </section>
+
+    <section id="view-library" class="view">
+      <div class="page-title"><p class="eyebrow">YOUR COLLECTION</p><h1>Library kamu</h1><p>Playlist lokal dan tautan playlist dari layanan musik.</p></div>
+      <div class="toolbar"><button class="primary-btn" id="library-add">＋ Tambahkan playlist</button><button class="secondary-btn" id="local-add">＋ Tambah file audio</button><input id="local-files" type="file" accept="audio/*" multiple hidden></div>
+      <div id="library-grid" class="card-grid"></div>
+      <h2 class="subheading">Playlist terhubung</h2><div id="external-list" class="external-list"></div>
+    </section>
+
+    <section id="view-liked" class="view">
+      <div class="page-title liked-hero"><p class="eyebrow">YOUR COLLECTION</p><h1>♥ Lagu disukai</h1><p id="liked-count">0 lagu</p></div>
+      <div id="liked-list" class="result-list"></div>
+    </section>
+  </main>
+</div>
+
+<footer class="player-bar">
+  <div class="now-playing"><div class="cover-placeholder" id="player-cover">♫</div><div class="track-copy"><b id="player-title">Belum ada lagu diputar</b><span id="player-artist">Pilih lagu dari library</span></div><button id="like-current" class="like-btn" title="Sukai lagu">♡</button></div>
+  <div class="player-center"><div class="player-controls"><button id="prev-btn" title="Sebelumnya">|◀</button><button id="play-btn" class="play-button" title="Putar">▶</button><button id="next-btn" title="Berikutnya">▶|</button></div><div class="progress-row"><span id="current-time">0:00</span><input id="progress" type="range" min="0" max="100" value="0"><span id="total-time">0:00</span></div></div>
+  <div class="player-volume"><span>♫</span><input id="volume" type="range" min="0" max="1" step=".01" value=".8"></div>
+</footer>
+
+<div class="modal-backdrop" id="playlist-modal" aria-hidden="true">
+  <div class="modal">
+    <button class="modal-close" data-close>×</button><p class="eyebrow">CONNECT YOUR MUSIC</p><h2>Tambahkan playlist</h2>
+    <p class="muted">Tempel tautan Spotify atau YouTube/YouTube Music. NEXA menyimpan tautan dan metadata yang diizinkan oleh API resmi.</p>
+    <label>Nama playlist (opsional)<input id="playlist-name" placeholder="Playlist favorit"></label>
+    <label>Sumber<select id="playlist-source"><option value="spotify">Spotify</option><option value="youtube">YouTube / YouTube Music</option></select></label>
+    <label>URL playlist<input id="playlist-url" placeholder="https://open.spotify.com/playlist/..."></label>
+    <div class="modal-actions"><button class="secondary-btn" data-close>Batal</button><button class="primary-btn" id="save-playlist">Simpan playlist</button></div>
+    <p id="modal-status" class="status-line"></p>
+  </div>
+</div>
+
+<audio id="audio-player"></audio>
+<script type="module" src="js/app.js"></script>
+</body></html>
